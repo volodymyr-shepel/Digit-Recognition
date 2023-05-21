@@ -74,22 +74,23 @@ def tune_parametres(params_distr):
 
     (x_train, y_train), (x_val, y_val), (x_test, y_test) = read_data()
 
-    rnd_search_cv = GridSearchCV(
-        keras_classifier, params_distr, cv=5, scoring="accuracy"
+    gr_search_cv = GridSearchCV(
+        keras_classifier, params_distr, cv=3, scoring="accuracy"
     )
 
-    rnd_search_cv.fit(
+    gr_search_cv.fit(
         x_train,
         y_train,
         epochs=30,
-        validation_data=(x_val, y_val),
-        callbacks=[keras.callbacks.EarlyStopping(patience=10)],
     )
 
-    best_model = rnd_search_cv.best_estimator_.model
-    best_score = rnd_search_cv.best_score_
+    best_model = gr_search_cv.best_estimator_.model
+    best_score = gr_search_cv.best_score_
+    best_params = gr_search_cv.best_params_
 
-    best_model.save("./task8/best_tuning.h5")
+    print(f"Best score:{best_score}\nBest parameters:{best_params}")
+
+    best_model.save("./task_8/best_tuning.h5")
 
 
 def create_model():
